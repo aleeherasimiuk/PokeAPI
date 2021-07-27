@@ -1,20 +1,28 @@
 const express = require('express');
 const passport = require('passport');
+const usersController = require('./controllers/users.js');
+const jwt = require('jsonwebtoken');
 const app = express();
 const port = 3000;
 require('./auth')(passport);
 
-app.post('/login', (request, response)=>{
+app.post('/login', (request, response) => {
 
   // Comprobamos credenciales
-  // Si no son válidas, error
-  // Si son válidas, generamos un JWT
-
-  response.status(200).json(
-    {
-      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o'
+  usersController.checkUserCredentials(request.body.user, request.body.password, (err, result) => {
+    // Si no son válidas, error
+    if (!result) {
+      return response.status(401).json(
+        {
+          message: 'Invalid credentials'
+        }
+      )
     }
-  )
+  });
+
+  // Si son válidas, generamos un JWT
+  const token = jwt.sign({ userId: request.body.user, });
+  response.status(200).json({ token: token })
 });
 
 app.post("/team/pokemons", (request, response) => {
