@@ -25,7 +25,6 @@ describe('Auth', () => {
             chai.assert.equal(res.status, 401);
             done();
           });
-        done();
       });
 
 

@@ -30,3 +30,30 @@ Definir una API para gestionar nuestro equipo Pokémon.
   - Usamos [JWT](jwt.io) JSON Web Token
     - Codificar información de usuario en un String.
 
+# Middleware
+
+En la construcción de un endpoint está:
+
+- El verbo http.
+- El endpoint
+- Los middlewares
+- El handler
+
+Con respecto a los middlewares:
+
+- Pueden ser 0 a n;
+- Van en orden
+- Deben llamar a next()
+
+```js
+app.get('/', (req, res, next) => {
+  ...
+  next()
+}), (req, res, next) => {
+  ...
+  next()
+}), (req, res) => {
+  // Handler
+});
+```
+En el caso de AUTH, se pasa como parámetro  `passport.authenticate('jwt', { session: false })`
