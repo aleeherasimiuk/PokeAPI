@@ -25,7 +25,33 @@ describe('Auth', () => {
       })
   });
 
-  xit('Should return 200 (OK) and token for successful login', (done) => {
+  it('Should return 400 when no user is provided', (done) => {
+    chai.request(app)
+      .post('/login')
+      .set('Content-Type', 'application/json')
+      .send({
+        password: 'hackme'
+      })
+      .end((err, result) => {
+        chai.assert.equal(result.status, 400);
+        done();
+      })
+  });
+
+  it('Should return 400 when no password is provided', (done) => {
+    chai.request(app)
+      .post('/login')
+      .set('Content-Type', 'application/json')
+      .send({
+        user: 'alee'
+      })
+      .end((err, result) => {
+        chai.assert.equal(result.status, 400);
+        done();
+      })
+  });
+
+  it('Should return 200 (OK) and token for successful login', (done) => {
 
     usersController.registerUser('alee', 'hackme')
 
@@ -43,7 +69,7 @@ describe('Auth', () => {
       })
   });
 
-  xit('Should return 200 (OK) when jwt is valid', done => {
+  it('Should return 200 (OK) when jwt is valid', done => {
     // Primero consulto /login que me devuelve el token que uso para el próximo request
     chai.request(app)
       .post('/login')

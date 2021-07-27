@@ -23,11 +23,13 @@ app.post('/login', (request, response) => {
     if (err || !result) {
       return response.status(401).json({message: 'Invalid credentials'})
     }
+
+    const token = jwt.sign({userId: result}, 'secretPassword');
+    response.status(200).json({token:token});
   });
 
   // Si son válidas, generamos un JWT
-  const token = jwt.sign({ userId: request.body.user, });
-  response.status(200).json({ token: token })
+  
 });
 
 app.post("/team/pokemons", (request, response) => {

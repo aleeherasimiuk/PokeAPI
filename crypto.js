@@ -5,7 +5,7 @@ const hashPassword = (plainTextPassword, done) => {
 };
 
 const hashPasswordSync = (plainTextPassword) => {
-  return bcrypt.hash(plainTextPassword, 10);
+  return bcrypt.hashSync(plainTextPassword, 10);
 };
 
 const comparePassword = (plainTextPassword, hashedPassword, done) => {
@@ -13,3 +13,5 @@ const comparePassword = (plainTextPassword, hashedPassword, done) => {
 };
 
 exports.hashPassword = hashPassword;
+exports.hashPasswordSync = hashPasswordSync;
+exports.comparePassword = comparePassword;

@@ -1,18 +1,20 @@
 const uuid = require('uuid')
 const crypto = require('../crypto.js')
 
-const userDatabase = {
-};
+const userDatabase = {};
 
-const checkUserCredentials = (userId, password) => {
-  let user = userDatabase[userId];
-  return crypto.comparePassword(password, user.password, (err, result) => {
-    return result;
-  })
+const checkUserCredentials = (username, password, done) => {
+  let user = getUserFromUsername(username);
+
+  if(!user){
+    done("Missing user")
+  }
+
+  crypto.comparePassword(password, user.password, done)
 }
 
 const registerUser = (username, password) => {
-  let hashed = crypto.hashPassword(password);
+  let hashed = crypto.hashPasswordSync(password);
 
   userDatabase[uuid.v4()] = {
     'username': username,
@@ -20,4 +22,14 @@ const registerUser = (username, password) => {
   }
 }
 
+const getUserFromUsername = (username) => {
+  for(let user in userDatabase){
+    if(userDatabase[user].username === username){
+      return userDatabase[user]
+    }
+  }
+}
+
 exports.registerUser = registerUser
+exports.checkUserCredentials = checkUserCredentials
+exports.getUserFromUsername = getUserFromUsername
