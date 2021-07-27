@@ -20,3 +20,13 @@ Definir una API para gestionar nuestro equipo Pokémon.
 - Eliminar Pokémon: DELETE /team/pokémons/:id
 - Intercambiar el orden de nuestro pokémon: PUT /team
 - Sistema de Credenciales
+
+
+# Autenticación
+
+- [PassportJS](passportjs.org/docs)
+  - Biblioteca de autenticación para NodeJS
+  - Autenticación por diferentes estrategias
+  - Usamos [JWT](jwt.io) JSON Web Token
+    - Codificar información de usuario en un String.
+
