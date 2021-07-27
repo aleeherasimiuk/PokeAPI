@@ -1,12 +1,7 @@
 const uuid = require('uuid')
-const crypto = require('./crypto.js')
+const crypto = require('../crypto.js')
 
 const userDatabase = {
-  '0001': {
-    'username': '',
-    'password': '',
-    'salt': ''
-  }
 };
 
 const checkUserCredentials = (userId, password) => {
@@ -16,13 +11,13 @@ const checkUserCredentials = (userId, password) => {
   })
 }
 
-const registerUser = (username,password) => {
-  crypto.hashPassword(password, (err, result) => {
-    userDatabase[uuid.v4()] = {
-      'username': username,
-      'password': result
-    }
-  })
-  
-  
+const registerUser = (username, password) => {
+  let hashed = crypto.hashPassword(password);
+
+  userDatabase[uuid.v4()] = {
+    'username': username,
+    'password': hashed,
+  }
 }
+
+exports.registerUser = registerUser

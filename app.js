@@ -5,18 +5,23 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const port = 3000;
 require('./auth')(passport);
+app.use(express.json())
 
 app.post('/login', (request, response) => {
+
+  if(!request.body){
+    return response.status(400).json({messaje: "Missing Data"})
+  }
+
+  if(!request.body.user || !request.body.password){
+    return response.status(400).json({messaje: "Missing Data"})
+  }
 
   // Comprobamos credenciales
   usersController.checkUserCredentials(request.body.user, request.body.password, (err, result) => {
     // Si no son válidas, error
-    if (!result) {
-      return response.status(401).json(
-        {
-          message: 'Invalid credentials'
-        }
-      )
+    if (err || !result) {
+      return response.status(401).json({message: 'Invalid credentials'})
     }
   });
 
