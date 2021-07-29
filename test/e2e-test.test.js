@@ -6,6 +6,15 @@ chai.use(chaiHTTP);
 const app = require('../app').app;
 const usersController = require('../controllers/users.js');
 
+before((done) => {
+  usersController.registerUser('alee', 'hackme')
+  done()
+})
+
+after((done) => {
+  usersController.cleanDatabase();
+  done()
+});
 
 describe('Auth', () => {
 
@@ -54,8 +63,6 @@ describe('Auth', () => {
 
   it('Should return 200 (OK) and token for successful login', (done) => {
 
-    usersController.registerUser('alee', 'hackme')
-
     chai.request(app)
       .post('/auth/login')
       .set('Content-Type', 'application/json')
@@ -71,7 +78,6 @@ describe('Auth', () => {
   });
 
   it('Should return 200 (OK) when jwt is valid', done => {
-    usersController.registerUser('alee', 'hackme')
     // Primero consulto /login que me devuelve el token que uso para el próximo request
     chai.request(app)
       .post('/auth/login')
