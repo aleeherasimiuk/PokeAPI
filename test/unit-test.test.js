@@ -1,5 +1,6 @@
 const assert = require('chai').assert;
 const userController = require('../controllers/users.js')
+const teamController = require('../controllers/teams.js')
 
 
 describe('Suite de prueba', () => {
@@ -8,5 +9,21 @@ describe('Suite de prueba', () => {
       userController.registerUser('admin', 'hackme');
       let admin = userController.getUserFromUsername('admin')
       assert.equal('admin', admin.username);
+  });
+  
+  it('User has team', () => {
+    userController.registerUser('user', 'hackme');
+    let id = userController.getUserIdFromUsername('user');
+    let team = teamController.getTeamOfUser(id);
+
+    assert.isEmpty(team)
+  });
+
+  it('User has team with bulbasaur', () => {
+    userController.registerUser('user', 'hackme');
+    let id = userController.getUserIdFromUsername('user');
+    let team = teamController.getTeamOfUser(id);
+    teamController.addPokemon(id, {name: 'Bulbasaur', pokedexNumber: 1});
+    assert.isNotEmpty(team)
   });
 });

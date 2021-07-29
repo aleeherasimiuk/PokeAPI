@@ -36,4 +36,34 @@ describe('Teams Test', () => {
           })
       });
   });
+
+
+  it("Should return the pokedex number", done => {
+    let pokemonName = 'Bulbasaur';
+    usersController.registerUser('alee2', 'hackme')
+    chai.request(app)
+      .post('/auth/login')
+      .set('Content-Type', 'application/json')
+      .send({ user: 'alee2', password: 'hackme' })
+      .end((err, res) => {
+        let token = res.body.token;
+        chai.request(app)
+          .post('/team/pokemons')
+          .send({ name: pokemonName })
+          .set('Authorization', `JWT ${token}`)
+          .end((err, res) => {
+            chai.assert.equal(res.status, 201);
+            chai.request(app).get('/team')
+              .set('Authorization', `JWT ${token}`)
+              .end((err, resp) => {
+                chai.assert.equal(resp.status, 200);
+                chai.assert.equal(resp.body.trainer, 'alee2');
+                chai.assert.equal(resp.body.team.length, 1);
+                chai.assert.equal(resp.body.team[0].name, pokemonName);
+                chai.assert.equal(resp.body.team[0].pokedexNumber, 1);
+                done();
+              });
+          })
+      });
+  });
 });
