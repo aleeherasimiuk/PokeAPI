@@ -38,20 +38,21 @@ const addPokemon = (token, pokemonName) => {
     .send({ name: pokemonName })
 }
 
+const putPokemons = (token, team) => {
+  return chai.request(app)
+    .put('/team')
+    .set('Authorization', `JWT ${token}`)
+    .send({ team: team })
+}
+
 describe('Teams Test', () => {
   it("Should return the user's team", done => {
     let team = [{ name: 'Charizard' }, { name: 'Blastoise' }]
 
-    const putPokemon = (token) => {
-      return chai.request(app)
-        .put('/team')
-        .set('Authorization', `JWT ${token}`)
-        .send({ team: team })
-    }
     // Primero consulto /login que me devuelve el token que uso para el próximo request
     login('alee', 'hackme').end((err, res) => {
       let token = res.body.token;
-      putPokemon(token)
+      putPokemons(token, team)
         .end((err, res) => {
           getTeam(token)
             .end((err, res) => {
@@ -92,6 +93,8 @@ describe('Teams Test', () => {
 
   it("Should delete a pokemon", done => {
 
+    let team = [{name: 'Charizard'}, {name: 'Pikachu'}, {name: 'Squirtle'}]
+
     const deletePokemon = (token, index) => {
       return chai.request(app)
         .delete('/team/pokemons/' + index)
@@ -101,23 +104,20 @@ describe('Teams Test', () => {
     login('alee', 'hackme')
       .end((err, res) => {
         let token = res.body.token;
-        addPokemon(token, 'Bulbasaur').end((_, res) => {
-          chai.assert.equal(res.status, 201);
-          addPokemon(token, 'Pikachu').end((_, res) => {
-            chai.assert.equal(res.status, 201);
+        putPokemons(token, team).end((_, res) => {
+            chai.assert.equal(res.status, 200);
             deletePokemon(token, 0).end((err, res) => {
               chai.assert.equal(res.status, 200);
               getTeam(token)
                 .end((err, resp) => {
                   chai.assert.equal(resp.status, 200);
                   chai.assert.equal(resp.body.trainer, 'alee');
-                  chai.assert.equal(resp.body.team.length, 1);
-                  chai.assert.equal(resp.body.team[0].name, 'Pikachu');
+                  chai.assert.equal(resp.body.team.length, team.length - 1);
+                  chai.assert.equal(resp.body.team[0].name, team[1].name);
                   done();
                 });
             })
           })
-        });
       });
   });
 });
