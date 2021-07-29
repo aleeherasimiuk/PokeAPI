@@ -18,7 +18,8 @@ describe('Auth', () => {
 
   it('Should return 400 when no data is provided', (done) => {
     chai.request(app)
-      .post('/login')
+      .post('/auth/login')
+      .set('Content-Type', 'application/json')
       .end((err, result) => {
         chai.assert.equal(result.status, 400);
         done();
@@ -27,7 +28,7 @@ describe('Auth', () => {
 
   it('Should return 400 when no user is provided', (done) => {
     chai.request(app)
-      .post('/login')
+      .post('/auth/login')
       .set('Content-Type', 'application/json')
       .send({
         password: 'hackme'
@@ -40,7 +41,7 @@ describe('Auth', () => {
 
   it('Should return 400 when no password is provided', (done) => {
     chai.request(app)
-      .post('/login')
+      .post('/auth/login')
       .set('Content-Type', 'application/json')
       .send({
         user: 'alee'
@@ -56,7 +57,7 @@ describe('Auth', () => {
     usersController.registerUser('alee', 'hackme')
 
     chai.request(app)
-      .post('/login')
+      .post('/auth/login')
       .set('Content-Type', 'application/json')
       .send({
         user: 'alee',
@@ -72,7 +73,7 @@ describe('Auth', () => {
   it('Should return 200 (OK) when jwt is valid', done => {
     // Primero consulto /login que me devuelve el token que uso para el próximo request
     chai.request(app)
-      .post('/login')
+      .post('/auth/login')
       .end((err, res) => {
         chai.request(app)
           .get('/team')
