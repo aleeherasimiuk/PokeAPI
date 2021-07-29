@@ -71,15 +71,21 @@ describe('Auth', () => {
   });
 
   it('Should return 200 (OK) when jwt is valid', done => {
+    usersController.registerUser('alee', 'hackme')
     // Primero consulto /login que me devuelve el token que uso para el próximo request
     chai.request(app)
       .post('/auth/login')
+      .set('Content-Type', 'application/json')
+      .send({
+        user: 'alee',
+        password: 'hackme'
+      })
       .end((err, res) => {
         chai.request(app)
           .get('/team')
           .set('Authorization', `JWT ${res.body.token}`)
           .end((err, res) => {
-            chai.assert.equal(res.status, 401);
+            chai.assert.equal(res.status, 200);
             done();
           });
       });
