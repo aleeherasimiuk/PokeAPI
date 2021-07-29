@@ -15,8 +15,9 @@ router.route('/').get(
       trainer: user.username,
       team: teamsController.getTeamOfUser(request.user.userId)
     })
-  }).put((request, response) => {
+  }).put(passport.authenticate('jwt', { session: false }), (request, response) => {
     teamsController.setTeam(request.user.userId, request.body.team);
+    response.sendStatus(200);
   })
 
 router.route('pokemons').post((request, response) => {
