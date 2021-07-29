@@ -42,8 +42,9 @@ router.route('/pokemons').post(authMiddleware,
       })
   })
 
-router.route('/pokemons/:pokeid').delete((request, response) => {
-  response.status(200).send("Hello World")
+router.route('/pokemons/:pokeid').delete(authMiddleware, (request, response) => {
+  teamsController.removePokemon(request.user.userId, parseInt(request.params.pokeid));
+  response.sendStatus(200);
 })
 
 exports.router = router;

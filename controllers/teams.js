@@ -16,12 +16,23 @@ const getTeamOfUser = (userId) => {
   return teamsDatabase[userId];
 }
 
+const clearTeams = () => {
+  for (let userId in teamsDatabase) {
+    teamsDatabase[userId] = [];
+  }
+}
+
+const removePokemon = (userId, index) => {
+  teamsDatabase[userId].splice(index, 1);
+}
 // Export the functions
 module.exports = {
   bootstrapTeam,
   addPokemon,
   setTeam,
   getTeamOfUser,
+  clearTeams,
+  removePokemon
 };
 
 /*
