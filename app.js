@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 const port = 24456;
 
-app.use(express.json())
+const middlewares = require('./middlewares');
+middlewares.setupMiddlewares(app);
 
 const authRoutes = require('./auth/auth.router.js').router;
 app.use('/auth', authRoutes)
