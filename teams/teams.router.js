@@ -3,10 +3,10 @@ const router = express.Router();
 const axios = require('axios').default;
 
 const passport = require('passport');
-require('../auth')(passport);
+require('../util/auth')(passport);
 
-const teamsController = require('../controllers/teams');
-const usersController = require('../controllers/users');
+const teamsController = require('./teams.controller.js');
+const usersController = require('../users/users.controller.js');
 
 const authMiddleware = passport.authenticate('jwt', { session: false });
 

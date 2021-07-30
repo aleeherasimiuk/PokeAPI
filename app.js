@@ -1,14 +1,14 @@
 const express = require('express');
 
 const app = express();
-const port = 3001;
+const port = 24456;
 
 app.use(express.json())
 
-const authRoutes = require('./routers/auth').router;
+const authRoutes = require('./auth/auth.router.js').router;
 app.use('/auth', authRoutes)
 
-const teamRoutes = require('./routers/teams').router;
+const teamRoutes = require('./teams/teams.router.js').router;
 app.use('/team', teamRoutes)
 
 

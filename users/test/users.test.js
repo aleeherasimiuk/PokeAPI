@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
-const userController = require('../controllers/users.js')
-const teamController = require('../controllers/teams.js')
+const userController = require('../users.controller.js')
+const teamController = require('../../teams/teams.controller.js')
 
 
 describe('Suite de prueba', () => {

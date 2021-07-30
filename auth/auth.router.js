@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
-
-const usersController = require('../controllers/users');
+const usersController = require('../users/users.controller.js');
 
 router.route('/').get((request, response) => {
   response.send('GET Auth router')
