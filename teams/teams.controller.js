@@ -17,9 +17,13 @@ const getTeamOfUser = (userId) => {
 }
 
 const clearTeams = () => {
-  for (let userId in teamsDatabase) {
-    teamsDatabase[userId] = [];
-  }
+  return new Promise((resolve, reject) => {
+    for (let userId in teamsDatabase) {
+      teamsDatabase[userId] = [];
+    }
+    resolve();
+  })
+  
 }
 
 const removePokemon = (userId, index) => {

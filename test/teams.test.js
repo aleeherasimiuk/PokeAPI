@@ -12,9 +12,14 @@ before((done) => {
   done()
 })
 
-afterEach((done) => {
-  teamsController.clearTeams()
-  done()
+afterEach(async () => {
+  /*
+    Hay dos formas de tratar con Promesas
+    Con callbacks
+    Con await (la función debe ser async) y sin el done()
+  */
+  //teamsController.clearTeams().then(() => done())
+  await teamsController.clearTeams()
 });
 
 const login = (user, pass) => {
