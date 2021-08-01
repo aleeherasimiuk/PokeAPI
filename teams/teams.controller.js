@@ -5,7 +5,13 @@ const bootstrapTeam = (userId) => {
 };
 
 const addPokemon = (userId, pokemon) => {
-  teamsDatabase[userId].push(pokemon);
+  return new Promise((resolve, reject) => {
+    if(teamsDatabase[userId].length >= 6) {
+      reject();
+    }
+    teamsDatabase[userId].push(pokemon);
+    resolve();
+  });
 };
 
 const setTeam = (userId, team) => {
@@ -13,7 +19,9 @@ const setTeam = (userId, team) => {
 }
 
 const getTeamOfUser = (userId) => {
-  return teamsDatabase[userId];
+  return new Promise((resolve, reject) => {
+    resolve(teamsDatabase[userId]);
+  });
 }
 
 const clearTeams = () => {

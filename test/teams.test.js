@@ -125,4 +125,20 @@ describe('Teams Test', () => {
           })
       });
   });
+
+  it("Should not be able to add pokemon if you aready have 6", (done) => {
+    let team = [{ name: 'Charizard' }, { name: 'Pikachu' }, { name: 'Squirtle' }, { name: 'Bulbasaur' }, { name: 'Charmander' }, { name: 'Squirtle' }]
+
+    login('alee', 'hackme')
+      .end((err, res) => {
+        let token = res.body.token;
+        putPokemons(token, team).end((_, res) => {
+          chai.assert.equal(res.status, 200);
+          addPokemon(token, 'Mewtwo').end((err, res) => {
+            chai.assert.equal(res.status, 400);
+            done();
+          });
+        });
+      });
+  })
 });

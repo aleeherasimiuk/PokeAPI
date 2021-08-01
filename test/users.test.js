@@ -19,10 +19,10 @@ describe('Suite de prueba', () => {
     assert.isEmpty(team)
   });
 
-  it('User has team with bulbasaur', () => {
+  it('User has team with bulbasaur', async () => {
     userController.registerUser('user', 'hackme');
     let id = userController.getUserIdFromUsername('user');
-    let team = teamController.getTeamOfUser(id);
+    let team = await teamController.getTeamOfUser(id);
     teamController.addPokemon(id, {name: 'Bulbasaur', pokedexNumber: 1});
     assert.isNotEmpty(team)
   });

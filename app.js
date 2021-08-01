@@ -1,7 +1,7 @@
 const express = require('express');
 
 const app = express();
-const port = 24456;
+const port = 24457;
 
 const middlewares = require('./middlewares');
 middlewares.setupMiddlewares(app);
