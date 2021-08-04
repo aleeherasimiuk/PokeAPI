@@ -7,7 +7,7 @@ const bootstrapTeam = (userId) => {
 const addPokemon = (userId, pokemon) => {
   return new Promise((resolve, reject) => {
     if(teamsDatabase[userId].length >= 6) {
-      reject();
+      reject("Already have6 pokemon");
     }
     teamsDatabase[userId].push(pokemon);
     resolve();
