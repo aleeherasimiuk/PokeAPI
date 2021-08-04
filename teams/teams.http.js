@@ -6,7 +6,7 @@ const { to } = require('../util/to');
 
 const getTeamFromUser = async (request, response) => {
   let userID = request.user.userId;
-  let user = usersController.getUser(userID);
+  let user = await usersController.getUser(userID);
   let team = await teamsController.getTeamOfUser(userID);
   response.status(200).json({
     trainer: user.username,
@@ -14,8 +14,8 @@ const getTeamFromUser = async (request, response) => {
   })
 }
 
-const setTeamToUser = (request, response) => {
-  teamsController.setTeam(request.user.userId, request.body.team);
+const setTeamToUser = async (request, response) => {
+  await teamsController.setTeam(request.user.userId, request.body.team);
   response.sendStatus(200);
 }
 
@@ -45,8 +45,8 @@ const addPokemon = async (request, response) => {
 }
 
 
-const deletePokemon = (request, response) => {
-  teamsController.removePokemon(request.user.userId, parseInt(request.params.pokeid));
+const deletePokemon = async (request, response) => {
+  await teamsController.removePokemon(request.user.userId, parseInt(request.params.pokeid));
   response.sendStatus(200);
 }
 

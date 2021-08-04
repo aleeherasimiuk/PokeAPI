@@ -4,26 +4,26 @@ const teamController = require('../teams/teams.controller.js')
 
 
 describe('Suite de prueba', () => {
-  it('admin', () => {
+  it('admin', async() => {
 
-      userController.registerUser('admin', 'hackme');
-      let admin = userController.getUserFromUsername('admin')
+      await userController.registerUser('admin', 'hackme');
+      let admin = await userController.getUserFromUsername('admin')
       assert.equal('admin', admin.username);
   });
   
-  it('User has team', () => {
-    userController.registerUser('user', 'hackme');
-    let id = userController.getUserIdFromUsername('user');
-    let team = teamController.getTeamOfUser(id);
+  it('User has team', async () => {
+    await userController.registerUser('user', 'hackme');
+    let id = await userController.getUserIdFromUsername('user');
+    let team = await teamController.getTeamOfUser(id);
 
     assert.isEmpty(team)
   });
 
   it('User has team with bulbasaur', async () => {
-    userController.registerUser('user', 'hackme');
-    let id = userController.getUserIdFromUsername('user');
+    await userController.registerUser('user', 'hackme');
+    let id = await userController.getUserIdFromUsername('user');
     let team = await teamController.getTeamOfUser(id);
-    teamController.addPokemon(id, {name: 'Bulbasaur', pokedexNumber: 1});
+    await teamController.addPokemon(id, {name: 'Bulbasaur', pokedexNumber: 1});
     assert.isNotEmpty(team)
   });
 });

@@ -4,53 +4,67 @@ const teams = require('../teams/teams.controller.js');
 
 let userDatabase = {};
 
-const checkUserCredentials = (username, password, done) => {
-  let user = getUserFromUsername(username);
-
-  if(!user){
-    done("Missing user")
-  }
-
-  crypto.comparePassword(password, user.password, done)
+const checkUserCredentials = (username, password) => {
+  return new Promise(async (resolve, reject) => {
+    let user = await getUserFromUsername(username);
+    if(user){
+      return crypto.comparePassword(password, user.password, 
+          (err, result)=> err? reject(err): resolve(result))
+    } else 
+      return reject("User not found");
+  });
 }
 
 const registerUser = (username, password) => {
-  let hashed = crypto.hashPasswordSync(password);
+  return new Promise(async (resolve, _) => {
+    let hashed = crypto.hashPasswordSync(password);
 
-  let userId = uuid.v4();
+    let userId = uuid.v4();
 
-  userDatabase[userId] = {
-    'username': username,
-    'password': hashed,
-  }
+    userDatabase[userId] = {
+      username: username,
+      password: hashed,
+    }
 
-  teams.bootstrapTeam(userId);
+    await teams.bootstrapTeam(userId);
 
-  return userId;
+    resolve(userId);
+  });
 }
 
 const getUserIdFromUsername = (username) => {
-  for(let user in userDatabase){
-    if(userDatabase[user].username === username){
-      return user
+  return new Promise((resolve, reject) => {
+    for(let user in userDatabase){
+      if(userDatabase[user].username === username){
+        return resolve(user)
+      }
     }
-  }
+    reject("User not found");
+  });
 }
 
 const getUserFromUsername = (username) => {
-  for(let user in userDatabase){
-    if(userDatabase[user].username === username){
-      return userDatabase[user]
+  return new Promise((resolve, reject) => {
+    for(let user in userDatabase){
+      if(userDatabase[user].username === username){
+        return resolve(userDatabase[user]);
+      }
     }
-  }
+    reject("User not found");
+  });
 }
 
 const getUser = (userId) => {
-  return userDatabase[userId];
+  return new Promise(resolve => {
+    return resolve(userDatabase[userId]);
+  });
 }
 
 const cleanDatabase = () => {
-  userDatabase = {};
+  return new Promise(resolve => {
+    userDatabase = {};
+    resolve();
+  });
 };
 
 exports.registerUser = registerUser

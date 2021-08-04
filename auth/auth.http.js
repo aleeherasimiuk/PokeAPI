@@ -1,7 +1,8 @@
 const usersController = require('../users/users.controller.js');
 const jwt = require('jsonwebtoken');
+const { to } = require('../util/to.js');
 
-const login = (request, response) => {
+const login = async (request, response) => {
 
   let validations = [
     (request) => Object.keys(request.body).length == 0,
@@ -14,28 +15,20 @@ const login = (request, response) => {
   if(missingData)
     return response.status(400).json({message: 'Missing data'});
 
-  // if (!request.body) {
-  //   return response.status(400).json({ messaje: "Missing Data" })
-  // }
+  let [error, resp] = 
+    await to(usersController.checkUserCredentials(request.body.user, request.body.password));
 
-  // if (!request.body.user || !request.body.password) {
-  //   return response.status(400).json({ messaje: "Missing Data" })
-  // }
+  if(error || !resp)
+    return response.status(401).json({message: 'Invalid credentials'});
 
+  let user = await usersController.getUserIdFromUsername(request.body.user);
 
+  if(!user)
+    return response.status(500).json({message: 'User not Found'});
 
+  let token = jwt.sign({userId: user}, 'secretPassword');
+  return response.status(200).json({token: token});
 
-  // Comprobamos credenciales
-  usersController.checkUserCredentials(request.body.user, request.body.password, (err, result) => {
-    // Si no son válidas, error
-    if (err || !result) {
-      return response.status(401).json({ message: 'Invalid credentials' })
-    }
-    // Si son válidas, generamos un JWT
-    let user = usersController.getUserIdFromUsername(request.body.user);
-    const token = jwt.sign({ userId: user}, 'secretPassword');
-    response.status(200).json({ token: token });
-  });
 
 }
 

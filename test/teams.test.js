@@ -7,9 +7,8 @@ const app = require('../app').app;
 const usersController = require('../users/users.controller.js');
 const teamsController = require('../teams/teams.controller.js');
 
-before((done) => {
-  usersController.registerUser('alee', 'hackme')
-  done()
+before(async () => {
+  await usersController.registerUser('alee', 'hackme');
 })
 
 afterEach(async () => {

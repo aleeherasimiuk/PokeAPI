@@ -6,14 +6,12 @@ chai.use(chaiHTTP);
 const app = require('../app').app;
 const usersController = require('../users/users.controller.js');
 
-before((done) => {
-  usersController.registerUser('alee', 'hackme')
-  done()
+before(async () => {
+  await usersController.registerUser('alee', 'hackme')
 })
 
-after((done) => {
-  usersController.cleanDatabase();
-  done()
+after(async () => {
+  await usersController.cleanDatabase();
 });
 
 describe('Auth', () => {
