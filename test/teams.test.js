@@ -7,7 +7,7 @@ const app = require('../app').app;
 const usersController = require('../users/users.controller.js');
 const teamsController = require('../teams/teams.controller.js');
 
-before(async () => {
+beforeEach(async () => {
   await usersController.registerUser('alee', 'hackme');
 })
 
@@ -18,6 +18,7 @@ afterEach(async () => {
     Con await (la función debe ser async) y sin el done()
   */
   //teamsController.clearTeams().then(() => done())
+  await usersController.cleanDatabase();
   await teamsController.clearTeams()
 });
 

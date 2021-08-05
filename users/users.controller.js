@@ -1,8 +1,14 @@
 const uuid = require('uuid');
 const crypto = require('../util/crypto.js');
 const teams = require('../teams/teams.controller.js');
+const mongoose = require('mongoose');
+const { to } = require('../util/to.js');
 
-let userDatabase = {};
+const UserModel = mongoose.model('UserModel', {
+  username: String,
+  password: String,
+  userId: String,
+})
 
 const checkUserCredentials = (username, password) => {
   return new Promise(async (resolve, reject) => {
@@ -21,11 +27,13 @@ const registerUser = (username, password) => {
 
     let userId = uuid.v4();
 
-    userDatabase[userId] = {
+    let newUser = new UserModel({
       username: username,
       password: hashed,
-    }
+      userId: userId,
+    })
 
+    await newUser.save()
     await teams.bootstrapTeam(userId);
 
     resolve(userId);
@@ -33,36 +41,29 @@ const registerUser = (username, password) => {
 }
 
 const getUserIdFromUsername = (username) => {
-  return new Promise((resolve, reject) => {
-    for(let user in userDatabase){
-      if(userDatabase[user].username === username){
-        return resolve(user)
-      }
-    }
-    reject("User not found");
+  return new Promise(async resolve => {
+    let [error, result] = await to(getUserFromUsername(username));
+    return error? reject(error): resolve(result.userId);
   });
 }
 
 const getUserFromUsername = (username) => {
-  return new Promise((resolve, reject) => {
-    for(let user in userDatabase){
-      if(userDatabase[user].username === username){
-        return resolve(userDatabase[user]);
-      }
-    }
-    reject("User not found");
+  return new Promise(async resolve => {
+    let [error, result] = await to(UserModel.findOne({username: username}).exec());
+    return error? reject(error): resolve(result);
   });
 }
 
 const getUser = (userId) => {
-  return new Promise(resolve => {
-    return resolve(userDatabase[userId]);
+  return new Promise(async resolve => {
+    let [error, result] = await to(UserModel.findOne({userId: userId}).exec());
+    return error? reject(error): resolve(result);
   });
 }
 
 const cleanDatabase = () => {
-  return new Promise(resolve => {
-    userDatabase = {};
+  return new Promise(async resolve => {
+    await UserModel.deleteMany({}).exec()
     resolve();
   });
 };

@@ -18,8 +18,10 @@ const login = async (request, response) => {
   let [error, resp] = 
     await to(usersController.checkUserCredentials(request.body.user, request.body.password));
 
+
   if(error || !resp)
     return response.status(401).json({message: 'Invalid credentials'});
+
 
   let user = await usersController.getUserIdFromUsername(request.body.user);
 

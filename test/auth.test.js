@@ -5,12 +5,15 @@ chai.use(chaiHTTP);
 
 const app = require('../app').app;
 const usersController = require('../users/users.controller.js');
+const teamController = require('../teams/teams.controller.js');
 
-before(async () => {
+
+beforeEach(async () => {
   await usersController.registerUser('alee', 'hackme')
 })
 
-after(async () => {
+afterEach(async () => {
+  await teamController.clearTeams();
   await usersController.cleanDatabase();
 });
 

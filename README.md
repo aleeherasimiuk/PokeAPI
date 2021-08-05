@@ -4,6 +4,26 @@
 
 Definir una API para gestionar nuestro equipo Pokémon.
 
+## Conceptos importantes
+
+- Construcción y uso de una API con Express
+- Entendiendo el Protocolo HTTP
+- Testing unitario
+- Testing de Integración
+- Test Driven Development
+- Autenticación
+  - Passport
+  - JWT
+  - Bcrypt
+- Refactors con base de tests
+- Arquitectura
+- Uso y configuración de Middlewares
+- Uso de Routing
+- Uso de Promesas - Async/Await
+- Persistencia
+  - Mongodb
+  - Variables de entorno
+
 ### Acciones
 
 - Identificarnos
@@ -57,3 +77,6 @@ app.get('/', (req, res, next) => {
 });
 ```
 En el caso de AUTH, se pasa como parámetro  `passport.authenticate('jwt', { session: false })`
+
+Posteriormente se generaliza con [auth-middleware.js]("util/auth-middleware.js")
+
