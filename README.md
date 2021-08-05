@@ -4,6 +4,10 @@
 
 Definir una API para gestionar nuestro equipo Pokémon.
 
+## Contexto
+
+Curso impartido por @BettaTech en [Mastermind](https://www.mastermind.ac/courses/desde-0-hasta-maestro-creando-el-backend-con-la-pokeapi)
+
 ## Conceptos importantes
 
 - Construcción y uso de una API con Express
@@ -80,3 +84,6 @@ En el caso de AUTH, se pasa como parámetro  `passport.authenticate('jwt', { ses
 
 Posteriormente se generaliza con [auth-middleware.js]("util/auth-middleware.js")
 
+## Certificación
+
+![img](https://cdn.filestackcontent.com/pqXljbO6SuaDiUhC5HW8?policy=eyJjYWxsIjpbInBpY2siLCJzdG9yZSIsInJlYWQiLCJjb252ZXJ0Iiwid3JpdGUiLCJzdGF0Il0sImV4cGlyeSI6MTYyODEzMjE1NX0%3D&signature=252c4ac0437d2f95920676e201dc772a9330594d43ab4e61188c00bee783b95a)
